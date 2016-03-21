@@ -22,7 +22,8 @@ import readlineSync from 'readline-sync';
  */
 
 export function Player(name, letter) {
-
+  this.name = name;
+  this.letter = letter;
 }
 
 /**
@@ -67,8 +68,13 @@ function drawBoard(state) {
  */
 
 export function emptySpotsLeft(state) {
-	// YOUR CODE HERE
-}
+	if (state[0][0] === " " || state[0][1] === " " || state[0][2] === " " ||
+      state[1][0] === " " || state[1][1] === " " || state[1][2] === " " ||
+      state[2][0] === " " || state[2][1] === " " || state[2][2] === " ") {
+        return true;
+      }
+      else return false;
+    }
 
 /**
  * We need a function to validate player moves.
@@ -91,7 +97,23 @@ export function emptySpotsLeft(state) {
  */
 
 export function validateMove(state, move) {
-  // YOUR CODE HERE
+
+
+  if (move.row < 1 || move.row > 3) {
+    return false;
+  }
+
+  if (move.column < 1 || move.column > 3) {
+    return false;
+  }
+
+  if (state[move.row - 1][move.column - 1] !== " ") {
+    console.log ("this is not a valid move")
+    return false;
+  }
+
+  return true;
+
 }
 /**
  * We need a function to ask a user for their move.
@@ -126,10 +148,34 @@ export function validateMove(state, move) {
 
 function getPlayerMove(state, player) {
 	// DISPLAY CURRENT PLAYER NAME AND LETTER
+  console.log(player.name + " (" + player.letter + ")");
 
-  // ASK WHAT ROW THEY WANT
 
-  // ASK WHAT COLUMN THEY WANT
+  // loop until valid
+  var foundMove = false;
+  var move = {};
+
+  while (!foundMove) {
+
+    // ASK WHAT ROW THEY WANT
+    var row = Number(readlineSync.question("pick  a row "));
+    // ASK WHAT COLUMN THEY WANT
+    var column = Number(readlineSync.question("pick a column "));
+
+    // make move object
+    move = {
+      row: row,
+      column: column
+    };
+    // check if its valid
+    var valid = validateMove(state, move);
+    // get out of loop if its valid
+    if (valid) {
+      foundMove = true;
+    }
+  }
+  // return the move
+  return move;
 }
 
 
@@ -161,9 +207,41 @@ function getPlayerMove(state, player) {
 export function isGameWon(state) {
   // CHECK FOR HORIZONTAL WINS ON EACH ROW
 
+  if ((state[0][0] === "X" && state[0][1] === "X" && state[0][2] === "X") ||
+      (state[0][0] === "O" && state[0][1] === "O" && state[0][2] === "O")) {
+    return state[0][0];
+  }
+  if ((state[1][0] === "X" && state[1][1] === "X" && state[1][2] === "X") ||
+      (state[1][0] === "O" && state[1][1] === "O" && state[1][2] === "O")) {
+        return state[1][0];
+      }
+  if ((state[2][0] === "X" && state[2][1] === "X" && state[2][2] === "X") ||
+      (state[2][0] === "O" && state[2][1] === "O" && state[2][2] === "O")) {
+        return state[2][0];
+      }
   // CHECK FOR VERTICAL WINS ON EACH COLUMN
+  if ((state[0][0] === "X" && state[1][0] === "X" && state[2][0] === "X") ||
+      (state[0][0] === "O" && state[1][0] === "O" && state[2][0] === "O")) {
+        return state[0][0];
+      }
+  if ((state[0][1] === "X" && state[1][1] === "X" && state[2][1] === "X") ||
+      (state[0][1] === "O" && state[1][1] === "O" && state[2][1] === "O")) {
+        return state[0][1];
+      }
+  if ((state[0][2] === "X" && state[1][2] === "X" && state[2][2] === "X") ||
+      (state[0][2] === "O" && state[1][2] === "O" && state[2][2] === "O")) {
+        return state[0][2];
+      }
 
   // CHECK FOR DIAGONAL WINS
+  if ((state[0][0] === "X" && state[1][1] === "X" && state[2][2] === "X") ||
+      (state[0][0] === "O" && state[1][1] === "O" && state[2][2] === "O")) {
+        return state[0][0];
+      }
+  if ((state[2][0] === "X" && state[1][1] === "X" && state[0][2] === "X") ||
+      (state[2][0] === "O" && state[1][1] === "O" && state[0][2] === "O")) {
+        return state[2][0];
+      }
 }
 
 /**
@@ -206,8 +284,14 @@ export function isGameWon(state) {
 
 function runGame() {
   // DISPLAY WELCOME BANNER
+  console.log("Welcome to tic-tac-toe");
 
   // ASK FOR PLAYER NAMES AND CREATE PLAYERS
+  function Player(name, letter) {
+    console.log(name + letter);
+  }
+  Player(name, letter);
+
 
   // CREATE INITIAL GAME STATE
   var gameBoard = [
@@ -217,22 +301,35 @@ function runGame() {
   ];
 
   // WHILE LOOP FOR WHEN GAME IS NOT WON
+  while runGame() {
 
     // DISPLAY BOARD
+    function drawBoard(state) {
+      console.log(state);
+    }
+    drawBoard(state);
+
 
     // GET MOVE FOR CURRENT PLAYER
+    function getPlayerMove(state, player) {
+      console.log(Player(name, letter) + validateMove(state, move));
+    }
 
     // UPDATE gameBoard with new move
+    getPlayerMove()
 
     // CHECK FOR WIN CONDITION
+    isGameWon()
 
     // CHECK FOR MOVES LEFT
+    emptySpotsLeft()
 
     // UPDATE CURRENT PLAYER
 
   // CONGRATULATE WINNER OR DECLARE IT A TIE
-}
 
+
+}
 /**
  * Finally, we call our runGame function so that
  * the game actually starts.
