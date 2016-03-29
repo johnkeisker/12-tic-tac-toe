@@ -283,14 +283,17 @@ export function isGameWon(state) {
  */
 
 function runGame() {
+
   // DISPLAY WELCOME BANNER
   console.log("Welcome to tic-tac-toe");
 
   // ASK FOR PLAYER NAMES AND CREATE PLAYERS
-  function Player(name, letter) {
-    console.log(name + letter);
-  }
-  Player(name, letter);
+  const p1Name = readlineSync.question("What's your name?");
+  const p2Name = readlineSync.question("What's your name?");
+  let players = [
+    new Player(p1Name. "X"),
+    new Player(p2Name, "O")
+  ];
 
 
   // CREATE INITIAL GAME STATE
@@ -300,32 +303,39 @@ function runGame() {
     [' ', ' ', ' '],
   ];
 
+  let gameOver = false;
+  let currentPlayer = players[0];
+
   // WHILE LOOP FOR WHEN GAME IS NOT WON
-  while runGame() {
+  while (gameOver) {
 
     // DISPLAY BOARD
-    function drawBoard(state) {
-      console.log(state);
-    }
-    drawBoard(state);
+    drawBoard(gameBoard);
 
 
     // GET MOVE FOR CURRENT PLAYER
-    function getPlayerMove(state, player) {
-      console.log(Player(name, letter) + validateMove(state, move));
-    }
+    const move = getPlayerMove(gameBoard, currentPlayer);
 
     // UPDATE gameBoard with new move
-    getPlayerMove()
+    gameBoard[move.row - 1][move.column - 1] = currentPlayer.letter;
 
     // CHECK FOR WIN CONDITION
-    isGameWon()
+    const foundMove = isGameWon(gameBoard);
+  if (foundMove !== false) {
+    console.log("congrats, ${foundMove} wins");
+    gameOver = true;
+  }
 
     // CHECK FOR MOVES LEFT
-    emptySpotsLeft()
+
 
     // UPDATE CURRENT PLAYER
-
+    if (currentPlayer === player[0]) {
+    currentPlayer = player[1];
+  }
+  else {
+    currentPlayer = players[0];
+  }
   // CONGRATULATE WINNER OR DECLARE IT A TIE
 
 
