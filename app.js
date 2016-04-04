@@ -68,13 +68,14 @@ function drawBoard(state) {
  */
 
 export function emptySpotsLeft(state) {
-	if (state[0][0] === " " || state[0][1] === " " || state[0][2] === " " ||
-      state[1][0] === " " || state[1][1] === " " || state[1][2] === " " ||
-      state[2][0] === " " || state[2][1] === " " || state[2][2] === " ") {
-        return true;
-      }
-      else return false;
-    }
+  if (state[0][0] === " " || state[0][1] === " " || state[0][2] === " " ||
+    state[1][0] === " " || state[1][1] === " " || state[1][2] === " " ||
+    state[2][0] === " " || state[2][1] === " " || state[2][2] === " ") {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 /**
  * We need a function to validate player moves.
@@ -108,7 +109,7 @@ export function validateMove(state, move) {
   }
 
   if (state[move.row - 1][move.column - 1] !== " ") {
-    console.log ("this is not a valid move")
+    console.log("this is not a valid move")
     return false;
   }
 
@@ -147,7 +148,7 @@ export function validateMove(state, move) {
  */
 
 function getPlayerMove(state, player) {
-	// DISPLAY CURRENT PLAYER NAME AND LETTER
+  // DISPLAY CURRENT PLAYER NAME AND LETTER
   console.log(player.name + " (" + player.letter + ")");
 
 
@@ -208,40 +209,42 @@ export function isGameWon(state) {
   // CHECK FOR HORIZONTAL WINS ON EACH ROW
 
   if ((state[0][0] === "X" && state[0][1] === "X" && state[0][2] === "X") ||
-      (state[0][0] === "O" && state[0][1] === "O" && state[0][2] === "O")) {
+    (state[0][0] === "O" && state[0][1] === "O" && state[0][2] === "O")) {
     return state[0][0];
   }
   if ((state[1][0] === "X" && state[1][1] === "X" && state[1][2] === "X") ||
-      (state[1][0] === "O" && state[1][1] === "O" && state[1][2] === "O")) {
-        return state[1][0];
-      }
+    (state[1][0] === "O" && state[1][1] === "O" && state[1][2] === "O")) {
+    return state[1][0];
+  }
   if ((state[2][0] === "X" && state[2][1] === "X" && state[2][2] === "X") ||
-      (state[2][0] === "O" && state[2][1] === "O" && state[2][2] === "O")) {
-        return state[2][0];
-      }
+    (state[2][0] === "O" && state[2][1] === "O" && state[2][2] === "O")) {
+    return state[2][0];
+  }
   // CHECK FOR VERTICAL WINS ON EACH COLUMN
   if ((state[0][0] === "X" && state[1][0] === "X" && state[2][0] === "X") ||
-      (state[0][0] === "O" && state[1][0] === "O" && state[2][0] === "O")) {
-        return state[0][0];
-      }
+    (state[0][0] === "O" && state[1][0] === "O" && state[2][0] === "O")) {
+    return state[0][0];
+  }
   if ((state[0][1] === "X" && state[1][1] === "X" && state[2][1] === "X") ||
-      (state[0][1] === "O" && state[1][1] === "O" && state[2][1] === "O")) {
-        return state[0][1];
-      }
+    (state[0][1] === "O" && state[1][1] === "O" && state[2][1] === "O")) {
+    return state[0][1];
+  }
   if ((state[0][2] === "X" && state[1][2] === "X" && state[2][2] === "X") ||
-      (state[0][2] === "O" && state[1][2] === "O" && state[2][2] === "O")) {
-        return state[0][2];
-      }
+    (state[0][2] === "O" && state[1][2] === "O" && state[2][2] === "O")) {
+    return state[0][2];
+  }
 
   // CHECK FOR DIAGONAL WINS
   if ((state[0][0] === "X" && state[1][1] === "X" && state[2][2] === "X") ||
-      (state[0][0] === "O" && state[1][1] === "O" && state[2][2] === "O")) {
-        return state[0][0];
-      }
+    (state[0][0] === "O" && state[1][1] === "O" && state[2][2] === "O")) {
+    return state[0][0];
+  }
   if ((state[2][0] === "X" && state[1][1] === "X" && state[0][2] === "X") ||
-      (state[2][0] === "O" && state[1][1] === "O" && state[0][2] === "O")) {
-        return state[2][0];
-      }
+    (state[2][0] === "O" && state[1][1] === "O" && state[0][2] === "O")) {
+    return state[2][0];
+  }
+
+  return false;
 }
 
 /**
@@ -288,10 +291,11 @@ function runGame() {
   console.log("Welcome to tic-tac-toe");
 
   // ASK FOR PLAYER NAMES AND CREATE PLAYERS
-  const p1Name = readlineSync.question("What's your name?");
-  const p2Name = readlineSync.question("What's your name?");
+  const p1Name = readlineSync.question("What's Player1's name?");
+  const p2Name = readlineSync.question("What's Player2's name?");
+
   let players = [
-    new Player(p1Name. "X"),
+    new Player(p1Name, "X"),
     new Player(p2Name, "O")
   ];
 
@@ -307,7 +311,7 @@ function runGame() {
   let currentPlayer = players[0];
 
   // WHILE LOOP FOR WHEN GAME IS NOT WON
-  while (gameOver) {
+  while (!gameOver) {
 
     // DISPLAY BOARD
     drawBoard(gameBoard);
@@ -320,28 +324,38 @@ function runGame() {
     gameBoard[move.row - 1][move.column - 1] = currentPlayer.letter;
 
     // CHECK FOR WIN CONDITION
-    const foundMove = isGameWon(gameBoard);
-  if (foundMove !== false) {
-    console.log("congrats, ${foundMove} wins");
-    gameOver = true;
-  }
+    const hasWon = isGameWon(gameBoard);
+    console.log(hasWon);
+
+    if (hasWon !== false) {
+      console.log(`congrats, ${hasWon} wins`);
+      gameOver = true;
+    }
+
+
 
     // CHECK FOR MOVES LEFT
+    let hasMovesLeft = emptySpotsLeft(gameBoard);
 
+    if (hasMovesLeft === false) {
+      console.log("it's a tie!");
+      gameOver = true;
+    }
 
     // UPDATE CURRENT PLAYER
-    if (currentPlayer === player[0]) {
-    currentPlayer = player[1];
-  }
-  else {
-    currentPlayer = players[0];
-  }
-  // CONGRATULATE WINNER OR DECLARE IT A TIE
+    if (currentPlayer === players[0]) {
+      currentPlayer = players[1];
+    } else {
+      currentPlayer = players[0];
+    }
+    // CONGRATULATE WINNER OR DECLARE IT A TIE
 
 
+  }
 }
-/**
- * Finally, we call our runGame function so that
- * the game actually starts.
- */
- runGame();
+
+  /**
+   * Finally, we call our runGame function so that
+   * the game actually starts.
+   */
+  runGame();
